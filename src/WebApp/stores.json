@@ -1,0 +1,86 @@
+﻿[
+    {
+        "id": 1,
+        "category": {
+            "id": 1,
+            "Name": "餐飲"
+        },
+        "name": "功成名就即興小廚",
+        "phone": "0938-923287",
+        "address": "台北市中山區雙城街13巷7號",
+        "contractContent": "內用9.5折, 外帶/送(配合時段) 85折",
+        "contractStartDate": "2021-02-01",
+        "contractEndDate": "2021-02-01",
+        "website": "https://tinyurl.com/ybw3g6qm"
+    },
+    {
+        "id": 2,
+        "category": {
+            "id": 1,
+            "Name": "餐飲"
+        },
+        "name": "功成名就即興小廚",
+        "phone": "0938-923287",
+        "address": "台北市中山區雙城街13巷7號",
+        "contractContent": "內用9.5折, 外帶/送(配合時段) 85折",
+        "contractStartDate": "2021-02-01",
+        "contractEndDate": "2021-02-01",
+        "website": "https://tinyurl.com/ybw3g6qm"
+    },
+    {
+        "id": 3,
+        "category": {
+            "id": 1,
+            "Name": "餐飲"
+        },
+        "name": "功成名就即興小廚",
+        "phone": "0938-923287",
+        "address": "台北市中山區雙城街13巷7號",
+        "contractContent": "內用9.5折, 外帶/送(配合時段) 85折",
+        "contractStartDate": "2021-02-01",
+        "contractEndDate": "2021-02-01",
+        "website": "https://tinyurl.com/ybw3g6qm"
+    },
+    {
+        "id": 4,
+        "category": {
+            "id": 1,
+            "Name": "餐飲"
+        },
+        "name": "功成名就即興小廚",
+        "phone": "0938-923287",
+        "address": "台北市中山區雙城街13巷7號",
+        "contractContent": "內用9.5折, 外帶/送(配合時段) 85折",
+        "contractStartDate": "2021-02-01",
+        "contractEndDate": "2021-02-01",
+        "website": "https://tinyurl.com/ybw3g6qm"
+    },
+    {
+        "id": 5,
+        "category": {
+            "id": 1,
+            "Name": "餐飲"
+        },
+        "name": "功成名就即興小廚",
+        "phone": "0938-923287",
+        "address": "台北市中山區雙城街13巷7號",
+        "contractContent": "內用9.5折, 外帶/送(配合時段) 85折",
+        "contractStartDate": "2021-02-01",
+        "contractEndDate": "2021-02-01",
+        "website": "https://tinyurl.com/ybw3g6qm"
+    },
+    {
+        "id": 6,
+        "category": {
+            "id": 1,
+            "Name": "餐飲"
+        },
+        "name": "功成名就即興小廚",
+        "phone": "0938-923287",
+        "address": "台北市中山區雙城街13巷7號",
+        "contractContent": "內用9.5折, 外帶/送(配合時段) 85折",
+        "contractStartDate": "2021-02-01",
+        "contractEndDate": "2021-02-01",
+        "website": "https://tinyurl.com/ybw3g6qm"
+    }
+]
