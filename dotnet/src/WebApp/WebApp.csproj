@@ -9,24 +9,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Controllers\WeatherForecastController.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="stores.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="NewFile.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="stores.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AuthorizedStore\AuthorizedStore.csproj" />
+    <ProjectReference Include="..\shared\AuthorizedStore\AuthorizedStore.csproj" />
   </ItemGroup>
-
 
 </Project>
