@@ -29,7 +29,7 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetStoresAsync([FromQuery]SearchCriteria criteria)
+        public async Task<IActionResult> GetAllAsync([FromQuery] SearchCriteria criteria)
         {
             if (criteria == null)
             {
@@ -39,6 +39,52 @@ namespace WebApp.Controllers
             var stores = await _storeDao.FindAllAsync(criteria);
 
             return Ok(stores);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] Store entity)
+        {
+            if (entity == null
+                || string.IsNullOrWhiteSpace(entity.Name)
+                || string.IsNullOrWhiteSpace(entity.ContractContent))
+            {
+                return BadRequest();
+            }
+
+            return Ok(await _storeDao.CreateAsync(entity));
+        }
+
+        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateAsync(int id, [FromBody] Store entity)
+        {
+            if (entity == null
+                || string.IsNullOrWhiteSpace(entity.Name)
+                || string.IsNullOrWhiteSpace(entity.ContractContent))
+            {
+                return BadRequest();
+            }
+
+            var store = await _storeDao.GetAsync(id);
+            if (store == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(await _storeDao.UpdateAsync(id, entity));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            var store = await _storeDao.GetAsync(id);
+            if (store == null)
+            {
+                return NotFound();
+            }
+
+            await _storeDao.DeleteAsync(id);
+            return Ok();
         }
     }
 }
