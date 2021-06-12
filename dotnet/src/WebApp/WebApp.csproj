@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\shared\AuthorizedStore\AuthorizedStore.csproj" />
+    <ProjectReference Include="..\libraries\AuthorizedStore\AuthorizedStore.csproj" />
   </ItemGroup>
 
 </Project>

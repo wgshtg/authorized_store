@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31129.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp", "src\WebApp\WebApp.csproj", "{46DEBAF5-CBF1-49E7-93A6-71190DDD51F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizedStore", "src\shared\AuthorizedStore\AuthorizedStore.csproj", "{ACB96D73-E916-4371-A1BF-94500374F20F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizedStore", "src\libraries\AuthorizedStore\AuthorizedStore.csproj", "{ACB96D73-E916-4371-A1BF-94500374F20F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
