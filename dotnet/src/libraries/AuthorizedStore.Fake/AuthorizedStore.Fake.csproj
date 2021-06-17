@@ -4,4 +4,14 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AuthorizedStore.Abstractions\AuthorizedStore.Abstractions.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Categories\categories.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
