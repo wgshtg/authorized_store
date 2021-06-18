@@ -28,6 +28,10 @@ namespace AuthorizedStore.Fake
                 ? categories
                 : categories.Where(c => c.Name.Contains(criteria.Name));
 
+            result = string.IsNullOrWhiteSpace(criteria.FullName)
+                ? result
+                : result.Where(c => c.Name == criteria.FullName);
+
             var ps = criteria.PageSize < 0 ? categories.Count : criteria.PageSize;
             result = result.Skip((criteria.PageIndex - 1) * ps).Take(ps);
 
@@ -36,6 +40,17 @@ namespace AuthorizedStore.Fake
                 criteria.PageIndex,
                 ps,
                 categories.Count);
+        }
+
+        public async Task<Category> CreateAsync(Category category)
+        {
+            var categories = await Task.Run(() => _categories);
+
+            category.Id = categories.Max(c => c.Id) + 1;
+
+            categories.Add(category);
+
+            return category;
         }
     }
 }

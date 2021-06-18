@@ -34,5 +34,13 @@ namespace WebApp.Controllers
 
             return Ok(categories);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] Category category)
+        {
+            var entity = await _categoryService.CreateAsync(category);
+
+            return Ok(entity);
+        }
     }
 }
