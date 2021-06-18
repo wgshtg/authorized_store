@@ -13,6 +13,13 @@ namespace AuthorizedStore.Fake
         public CategoryDao(IList<Category> categories)
             => _categories = categories;
 
+        public async Task<Category> GetAsync(int id)
+        {
+            var categories = await Task.Run(() => _categories);
+
+            return categories.FirstOrDefault(c => c.Id == id);
+        }
+
         public async Task<IPagedList<Category>> GetListAsync(CategoryCriteria criteria)
         {
             var categories = await Task.Run(() => _categories);

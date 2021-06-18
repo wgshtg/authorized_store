@@ -17,6 +17,9 @@ namespace AuthorizedStore.Fake
             _invalidNameKeywords = configuration.GetSection("Categories:InvalidNameKeywords").Get<string[]>();
         }
 
+        public async Task<Category> GetAsync(int id)
+            => await _categoryDao.GetAsync(id);
+
         public async Task<IPagedList<Category>> GetListAsync(CategoryCriteria criteria)
         {
             Validate(criteria);

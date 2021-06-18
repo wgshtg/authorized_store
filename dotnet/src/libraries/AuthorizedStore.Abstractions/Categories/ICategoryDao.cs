@@ -5,6 +5,8 @@ namespace AuthorizedStore.Abstractions
 {
     public interface ICategoryDao
     {
+        Task<Category> GetAsync(int id);
+
         Task<IPagedList<Category>> GetListAsync(CategoryCriteria criteria);
     }
 }

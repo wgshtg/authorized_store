@@ -14,6 +14,19 @@ namespace WebApp.Controllers
         public CategoriesController(ICategoryService categoryService)
             => _categoryService = categoryService;
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetAsync([FromRoute] int id)
+        {
+            var category = await _categoryService.GetAsync(id);
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(category);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetListAsync([FromQuery] CategoryCriteria criteria)
         {
