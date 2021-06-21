@@ -32,6 +32,10 @@ namespace AuthorizedStore.Fake
                 ? result
                 : result.Where(c => c.Name == criteria.FullName);
 
+            result = criteria.NotId.HasValue
+                ? result.Where(c => c.Id != criteria.NotId.Value)
+                : result;
+
             var ps = criteria.PageSize < 0 ? categories.Count : criteria.PageSize;
             result = result.Skip((criteria.PageIndex - 1) * ps).Take(ps);
 
@@ -49,6 +53,16 @@ namespace AuthorizedStore.Fake
             category.Id = categories.Max(c => c.Id) + 1;
 
             categories.Add(category);
+
+            return category;
+        }
+
+        public async Task<Category> UpdateAsync(Category category)
+        {
+            var categories = await Task.Run(() => _categories);
+
+            var entity = categories.FirstOrDefault(c => c.Id == category.Id);
+            entity.Name = category.Name;
 
             return category;
         }

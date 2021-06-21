@@ -11,6 +11,11 @@
         /// <summary>
         /// Internal usage.
         /// </summary>
+        public int? NotId { get; set; }
+
+        /// <summary>
+        /// Internal usage.
+        /// </summary>
         public string FullName { get; set; }
     }
 }

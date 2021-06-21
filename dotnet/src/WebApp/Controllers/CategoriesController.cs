@@ -42,5 +42,18 @@ namespace WebApp.Controllers
 
             return Ok(entity);
         }
+
+        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateAsync([FromRoute] int id, [FromBody] Category category)
+        {
+            var entity = await _categoryService.UpdateAsync(id, category);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(entity);
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace AuthorizedStore.Abstractions
         Task<IPagedList<Category>> GetListAsync(CategoryCriteria criteria);
 
         Task<Category> CreateAsync(Category category);
+
+        Task<Category> UpdateAsync(Category category);
     }
 }

@@ -38,6 +38,23 @@ namespace AuthorizedStore.Fake
             return await _categoryDao.CreateAsync(category);
         }
 
+        public async Task<Category> UpdateAsync(int id, Category entity)
+        {
+            var category = await _categoryDao.GetAsync(id);
+            if (category == null)
+            {
+                // TODO: throw specific exception.
+                return null;
+            }
+
+            await ValidateAsync(entity, id);
+
+            entity.Id = id;
+            entity.Name = entity.Name;
+
+            return await _categoryDao.UpdateAsync(entity);
+        }
+
         private void Validate(CategoryCriteria criteria)
         {
             if (criteria == null)
@@ -51,7 +68,7 @@ namespace AuthorizedStore.Fake
             }
         }
 
-        private async Task ValidateAsync(Category category)
+        private async Task ValidateAsync(Category category, int? notId = null)
         {
             if (string.IsNullOrWhiteSpace(category?.Name))
             {
@@ -62,6 +79,7 @@ namespace AuthorizedStore.Fake
 
             var criteria = new CategoryCriteria
             {
+                NotId = notId,
                 FullName = category.Name,
                 PageIndex = 1,
                 PageSize = 1
