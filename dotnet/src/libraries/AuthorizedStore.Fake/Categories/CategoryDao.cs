@@ -66,5 +66,16 @@ namespace AuthorizedStore.Fake
 
             return category;
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            var categories = await Task.Run(() => _categories);
+
+            var category = categories.FirstOrDefault(c => c.Id == id);
+            if (category != null)
+            {
+                categories.Remove(category);
+            }
+        }
     }
 }

@@ -55,5 +55,20 @@ namespace WebApp.Controllers
 
             return Ok(entity);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync([FromRoute] int id)
+        {
+            // TODO: validate this and throw specific exception in service.
+            var entity = await _categoryService.GetAsync(id);
+            if (entity == null)
+            {
+                return NotFound();
+            }
+
+            await _categoryService.DeleteAsync(id);
+
+            return Ok();
+        }
     }
 }

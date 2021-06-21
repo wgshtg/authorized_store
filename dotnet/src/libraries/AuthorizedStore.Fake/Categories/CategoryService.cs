@@ -55,6 +55,9 @@ namespace AuthorizedStore.Fake
             return await _categoryDao.UpdateAsync(entity);
         }
 
+        public async Task DeleteAsync(int id)
+            => await _categoryDao.DeleteAsync(id);
+
         private void Validate(CategoryCriteria criteria)
         {
             if (criteria == null)
