@@ -45,10 +45,9 @@ namespace AuthorizedStore.Fake
                 throw new ArgumentNullException(nameof(criteria), "Criteria to get categories is required.");
             }
 
-            if (!string.IsNullOrWhiteSpace(criteria.Name)
-                && Array.Exists(_invalidNameKeywords, (k) => criteria.Name.Contains(k)))
+            if (!string.IsNullOrWhiteSpace(criteria.Name))
             {
-                throw new ArgumentException("Category name is invalid.", nameof(Category.Name));
+                ValidateIfNameIsInvalid(criteria.Name);
             }
         }
 
