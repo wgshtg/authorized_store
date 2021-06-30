@@ -46,6 +46,8 @@ namespace AuthorizedStore.Fake
                 ? result.Where(c => c.Id != criteria.NotId.Value)
                 : result;
 
+            var count = result.Count();
+
             var pi = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
             var ps = criteria.PageSize <= 0 ? 10 : criteria.PageSize;
             result = result.Skip((pi - 1) * ps).Take(ps);
@@ -54,7 +56,7 @@ namespace AuthorizedStore.Fake
                 result,
                 pi,
                 ps,
-                categories.Count);
+                count);
         }
 
         public async Task<Category> CreateAsync(Category category)
