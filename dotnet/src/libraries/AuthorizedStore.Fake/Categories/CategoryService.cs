@@ -41,14 +41,13 @@ namespace AuthorizedStore.Fake
             return await _categoryDao.CreateAsync(category);
         }
 
-        public async Task<Category> UpdateAsync(int id, Category entity)
+        public async Task<Category> UpdateAsync(int id, Category category)
         {
-            await GetRequiredCategoryAsync(id);
+            var entity = await GetRequiredCategoryAsync(id);
 
-            await ValidateAsync(entity, id);
+            await ValidateAsync(category, id);
 
-            entity.Id = id;
-            entity.Name = entity.Name;
+            entity.Name = category.Name;
 
             return await _categoryDao.UpdateAsync(entity);
         }
