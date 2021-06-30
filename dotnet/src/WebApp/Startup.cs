@@ -23,7 +23,7 @@ namespace WebApp
             services.AddControllers();
 
             services.AddMockData()
-                .InjectFakeModule();
+                .AddFakeModule();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

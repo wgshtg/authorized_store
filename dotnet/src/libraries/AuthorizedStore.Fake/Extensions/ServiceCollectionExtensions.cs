@@ -10,7 +10,7 @@ namespace AuthorizedStore.Fake.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection InjectFakeModule(this IServiceCollection services)
+        public static IServiceCollection AddFakeModule(this IServiceCollection services)
         {
             var fileProvider = new PhysicalFileProvider(AppContext.BaseDirectory);
             var filePath = Path.Combine("Categories", "categories.json");
