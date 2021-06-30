@@ -24,6 +24,16 @@ namespace AuthorizedStore.Fake
         {
             var categories = await Task.Run(() => _categories);
 
+            if (criteria == null)
+            {
+                // Downward compatible to use blank criteria with default pagination: first page with 10 resources.
+                return new StaticPagedList<Category>(
+                    categories.Take(10),
+                    1,
+                    10,
+                    categories.Count);
+            }
+
             var result = string.IsNullOrWhiteSpace(criteria.Name)
                 ? categories
                 : categories.Where(c => c.Name.Contains(criteria.Name));
@@ -36,12 +46,13 @@ namespace AuthorizedStore.Fake
                 ? result.Where(c => c.Id != criteria.NotId.Value)
                 : result;
 
-            var ps = criteria.PageSize < 0 ? categories.Count : criteria.PageSize;
-            result = result.Skip((criteria.PageIndex - 1) * ps).Take(ps);
+            var pi = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
+            var ps = criteria.PageSize <= 0 ? 10 : criteria.PageSize;
+            result = result.Skip((pi - 1) * ps).Take(ps);
 
             return new StaticPagedList<Category>(
                 result,
-                criteria.PageIndex,
+                pi,
                 ps,
                 categories.Count);
         }

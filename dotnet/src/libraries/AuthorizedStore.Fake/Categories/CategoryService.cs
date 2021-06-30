@@ -23,10 +23,16 @@ namespace AuthorizedStore.Fake
 
         public async Task<IPagedList<Category>> GetListAsync(CategoryCriteria criteria)
         {
-            Validate(criteria);
+            if (criteria != null)
+            {
+                if (!string.IsNullOrWhiteSpace(criteria.Name))
+                {
+                    ValidateIfNameIsInvalid(criteria.Name);
+                }
 
-            criteria.PageIndex = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
-            criteria.PageSize = criteria.PageSize <= 0 ? -1 : criteria.PageSize;
+                criteria.PageIndex = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
+                criteria.PageSize = criteria.PageSize <= 0 ? 10 : criteria.PageSize;
+            }
 
             return await _categoryDao.GetListAsync(criteria);
         }
@@ -57,19 +63,6 @@ namespace AuthorizedStore.Fake
 
         public async Task DeleteAsync(int id)
             => await _categoryDao.DeleteAsync(id);
-
-        private void Validate(CategoryCriteria criteria)
-        {
-            if (criteria == null)
-            {
-                throw new ArgumentNullException(nameof(criteria), "Criteria to get categories is required.");
-            }
-
-            if (!string.IsNullOrWhiteSpace(criteria.Name))
-            {
-                ValidateIfNameIsInvalid(criteria.Name);
-            }
-        }
 
         private async Task ValidateAsync(Category category, int? notId = null)
         {
