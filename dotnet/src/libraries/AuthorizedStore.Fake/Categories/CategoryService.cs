@@ -68,7 +68,7 @@ namespace AuthorizedStore.Fake
         {
             if (string.IsNullOrWhiteSpace(category?.Name))
             {
-                throw new ArgumentNullException(nameof(Category.Name), "Category name is required.");
+                throw new ArgumentNullException(nameof(Category.Name), "Name is required.");
             }
 
             ValidateIfNameIsInvalid(category.Name);
@@ -83,7 +83,7 @@ namespace AuthorizedStore.Fake
             var categories = await _categoryDao.GetListAsync(criteria);
             if (categories.Count > 0)
             {
-                throw new DuplicateNameException("The category with this name has already existed.");
+                throw new DuplicateNameException("Name has already been existed.");
             }
         }
 
@@ -91,7 +91,7 @@ namespace AuthorizedStore.Fake
         {
             if (Array.Exists(_invalidNameKeywords, (k) => name.Contains(k)))
             {
-                throw new ArgumentException("Category name is invalid.", nameof(Category.Name));
+                throw new ArgumentException("Name is invalid.", nameof(Category.Name));
             }
         }
     }
