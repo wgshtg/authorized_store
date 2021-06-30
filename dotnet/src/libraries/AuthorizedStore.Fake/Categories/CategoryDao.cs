@@ -84,7 +84,7 @@ namespace AuthorizedStore.Fake
             var entity = categories.FirstOrDefault(c => c.Id == category.Id);
             entity.Name = category.Name;
 
-            return category;
+            return entity;
         }
 
         public async Task DeleteAsync(int id)
