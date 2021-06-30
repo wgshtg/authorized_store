@@ -2,6 +2,7 @@
 using System.Data;
 using System.Threading.Tasks;
 using AuthorizedStore.Abstractions;
+using AuthorizedStore.Exceptions;
 using AuthorizedStore.Extensions;
 using X.PagedList;
 
@@ -42,12 +43,7 @@ namespace AuthorizedStore.Fake
 
         public async Task<Category> UpdateAsync(int id, Category entity)
         {
-            var category = await _categoryDao.GetAsync(id);
-            if (category == null)
-            {
-                // TODO: throw specific exception.
-                return null;
-            }
+            await GetRequiredCategoryAsync(id);
 
             await ValidateAsync(entity, id);
 
@@ -58,7 +54,11 @@ namespace AuthorizedStore.Fake
         }
 
         public async Task DeleteAsync(int id)
-            => await _categoryDao.DeleteAsync(id);
+        {
+            await GetRequiredCategoryAsync(id);
+
+            await _categoryDao.DeleteAsync(id);
+        }
 
         private async Task ValidateAsync(Category category, int? excludedId = null)
         {
@@ -92,5 +92,9 @@ namespace AuthorizedStore.Fake
                 throw new DuplicateNameException("Name has already been existed.");
             }
         }
+
+        private async Task<Category> GetRequiredCategoryAsync(int id)
+            => await _categoryDao.GetAsync(id)
+                ?? throw new ResourceNotFoundException(nameof(Category), id);
     }
 }
