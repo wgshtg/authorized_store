@@ -20,6 +20,21 @@ namespace AuthorizedStore.Fake
             return categories.FirstOrDefault(c => c.Id == id);
         }
 
+        public async Task<Category> GetDuplicateAsync(string name, int? excludedId = null)
+        {
+            var categories = await Task.Run(() => _categories);
+
+            var result = string.IsNullOrWhiteSpace(name)
+                ? categories
+                : categories.Where(c => c.Name == name);
+
+            result = excludedId.HasValue
+                ? result.Where(c => c.Id != excludedId.Value)
+                : result;
+
+            return result.FirstOrDefault();
+        }
+
         public async Task<IPagedList<Category>> GetListAsync(CategoryCriteria criteria)
         {
             var categories = await Task.Run(() => _categories);
@@ -37,14 +52,6 @@ namespace AuthorizedStore.Fake
             var result = string.IsNullOrWhiteSpace(criteria.Name)
                 ? categories
                 : categories.Where(c => c.Name.Contains(criteria.Name));
-
-            result = string.IsNullOrWhiteSpace(criteria.FullName)
-                ? result
-                : result.Where(c => c.Name == criteria.FullName);
-
-            result = criteria.NotId.HasValue
-                ? result.Where(c => c.Id != criteria.NotId.Value)
-                : result;
 
             var count = result.Count();
 

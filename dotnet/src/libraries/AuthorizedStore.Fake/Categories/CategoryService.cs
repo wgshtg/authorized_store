@@ -60,7 +60,7 @@ namespace AuthorizedStore.Fake
         public async Task DeleteAsync(int id)
             => await _categoryDao.DeleteAsync(id);
 
-        private async Task ValidateAsync(Category category, int? notId = null)
+        private async Task ValidateAsync(Category category, int? excludedId = null)
         {
             if (string.IsNullOrWhiteSpace(category?.Name))
             {
@@ -68,19 +68,7 @@ namespace AuthorizedStore.Fake
             }
 
             ValidateIfNameIsInvalid(category.Name);
-
-            var criteria = new CategoryCriteria
-            {
-                NotId = notId,
-                FullName = category.Name,
-                PageIndex = 1,
-                PageSize = 1
-            };
-            var categories = await _categoryDao.GetListAsync(criteria);
-            if (categories.Count > 0)
-            {
-                throw new DuplicateNameException("Name has already been existed.");
-            }
+            await ValidateIfDuplicateCategoryExistsAsync(category.Name, excludedId);
         }
 
         private void ValidateIfNameIsInvalid(string name)
@@ -88,6 +76,20 @@ namespace AuthorizedStore.Fake
             if (name.ContainsInvalidKeywords())
             {
                 throw new ArgumentException("Name is invalid.", nameof(Category.Name));
+            }
+        }
+
+        private async Task ValidateIfDuplicateCategoryExistsAsync(string name, int? excludedId = null)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return;
+            }
+
+            var category = await _categoryDao.GetDuplicateAsync(name, excludedId);
+            if (category != null)
+            {
+                throw new DuplicateNameException("Name has already been existed.");
             }
         }
     }

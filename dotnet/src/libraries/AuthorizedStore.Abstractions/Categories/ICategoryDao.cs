@@ -7,6 +7,8 @@ namespace AuthorizedStore.Abstractions
     {
         Task<Category> GetAsync(int id);
 
+        Task<Category> GetDuplicateAsync(string name, int? excludedId = null);
+
         Task<IPagedList<Category>> GetListAsync(CategoryCriteria criteria);
 
         Task<Category> CreateAsync(Category category);
