@@ -36,7 +36,9 @@ namespace AuthorizedStore.Fake
 
         public async Task<Category> CreateAsync(Category category)
         {
-            await ValidateAsync(category);
+            ValidateNameIsRequired(category?.Name);
+            ValidateIfNameIsInvalid(category.Name);
+            await ValidateIfDuplicateCategoryExistsAsync(category.Name);
 
             return await _categoryDao.CreateAsync(category);
         }
@@ -45,7 +47,9 @@ namespace AuthorizedStore.Fake
         {
             var entity = await GetRequiredCategoryAsync(id);
 
-            await ValidateAsync(category, id);
+            ValidateNameIsRequired(category?.Name);
+            ValidateIfNameIsInvalid(category.Name);
+            await ValidateIfDuplicateCategoryExistsAsync(category.Name, id);
 
             entity.Name = category.Name;
 
@@ -59,15 +63,12 @@ namespace AuthorizedStore.Fake
             await _categoryDao.DeleteAsync(id);
         }
 
-        private async Task ValidateAsync(Category category, int? excludedId = null)
+        private void ValidateNameIsRequired(string name)
         {
-            if (string.IsNullOrWhiteSpace(category?.Name))
+            if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException(nameof(Category.Name), "Name is required.");
             }
-
-            ValidateIfNameIsInvalid(category.Name);
-            await ValidateIfDuplicateCategoryExistsAsync(category.Name, excludedId);
         }
 
         private void ValidateIfNameIsInvalid(string name)
