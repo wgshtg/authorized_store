@@ -1,3 +1,4 @@
+using AuthorizedStore.Fake.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,7 +22,8 @@ namespace WebApp
         {
             services.AddControllers();
 
-            services.AddMockData();
+            services.AddMockData()
+                .AddFakeModule();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
