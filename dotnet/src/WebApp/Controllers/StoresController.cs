@@ -9,18 +9,31 @@ namespace WebApp.Controllers
     [Route("api/[controller]")]
     public class StoresController : ControllerBase
     {
-        private readonly IStoreDao _storeDao;
+        private readonly IStoreService _stores;
 
-        public StoresController(IStoreDao storeDao)
+        public StoresController(IStoreService stores)
         {
-            _storeDao = storeDao;
+            _stores = stores;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateAsync([FromBody] Store entity)
+        {
+            return Ok(await _stores.CreateAsync(entity));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAsync(int id)
+        {
+            await _stores.DeleteAsync(id);
+
+            return Ok();
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(int id)
         {
-            var store = await _storeDao.GetAsync(id);
-
+            var store = await _stores.GetAsync(id);
             if (store == null)
             {
                 return NotFound();
@@ -32,60 +45,16 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllAsync([FromQuery] SearchCriteria criteria)
         {
-            if (criteria == null)
-            {
-                return BadRequest();
-            }
-
-            var stores = await _storeDao.FindAllAsync(criteria);
+            var stores = await _stores.FindAllAsync(criteria);
 
             return Ok(stores);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] Store entity)
-        {
-            if (entity == null
-                || string.IsNullOrWhiteSpace(entity.Name)
-                || string.IsNullOrWhiteSpace(entity.ContractContent))
-            {
-                return BadRequest();
-            }
-
-            return Ok(await _storeDao.CreateAsync(entity));
         }
 
         [HttpPut("{id}")]
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, [FromBody] Store entity)
         {
-            if (entity == null
-                || string.IsNullOrWhiteSpace(entity.Name)
-                || string.IsNullOrWhiteSpace(entity.ContractContent))
-            {
-                return BadRequest();
-            }
-
-            var store = await _storeDao.GetAsync(id);
-            if (store == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(await _storeDao.UpdateAsync(id, entity));
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
-        {
-            var store = await _storeDao.GetAsync(id);
-            if (store == null)
-            {
-                return NotFound();
-            }
-
-            await _storeDao.DeleteAsync(id);
-            return Ok();
+            return Ok(await _stores.UpdateAsync(id, entity));
         }
     }
 }
