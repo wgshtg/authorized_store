@@ -43,6 +43,12 @@ namespace AuthorizedStore.Fake
             }
 
             CheckInvalidName(criteria.Name);
+            if (criteria.ContractStartDate > criteria.ContractEndDate)
+            {
+                throw new ArgumentException(
+                    $"{nameof(criteria.ContractStartDate)} should be less than {nameof(criteria.ContractEndDate)}");
+            }
+
             criteria.PageIndex = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
             criteria.PageSize = criteria.PageSize <= 0 ? 10 : criteria.PageSize;
 

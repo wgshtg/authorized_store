@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,7 +47,7 @@ namespace AuthorizedStore.Fake
                 return null;
             }
 
-            var result = stores.Where(x => x.Name.Equals(name, System.StringComparison.Ordinal));
+            var result = stores.Where(x => x.Name.Equals(name, StringComparison.Ordinal));
             result = excludedId.HasValue
                 ? result.Where(x => x.Id != excludedId.Value)
                 : result;
@@ -60,6 +61,16 @@ namespace AuthorizedStore.Fake
             var result = string.IsNullOrWhiteSpace(criteria.Name)
                 ? stores
                 : stores.Where(c => c.Name.Contains(criteria.Name));
+            if (criteria.ContractStartDate != null)
+            {
+                result = result.Where(x => x.ContractStartDate >= criteria.ContractStartDate);
+            }
+
+            if (criteria.ContractEndDate != null)
+            {
+                result = result.Where(x => x.ContractEndDate <= criteria.ContractEndDate);
+            }
+
             var count = result.Count();
             var pi = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
             var ps = criteria.PageSize <= 0 ? 10 : criteria.PageSize;
