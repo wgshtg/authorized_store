@@ -38,6 +38,22 @@ namespace AuthorizedStore.Fake
             return stores.FirstOrDefault(x => x.Id == id);
         }
 
+        public async Task<Store> GetDuplicateAsync(string name, int? excludedId = null)
+        {
+            var stores = await Task.Run(() => _stores);
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+
+            var result = stores.Where(x => x.Name.Equals(name, System.StringComparison.Ordinal));
+            result = excludedId.HasValue
+                ? result.Where(x => x.Id != excludedId.Value)
+                : result;
+
+            return result.FirstOrDefault();
+        }
+
         public async Task<IPagedList<Store>> FindAllAsync(StoreCriteria criteria)
         {
             var stores = await Task.Run(() => _stores);

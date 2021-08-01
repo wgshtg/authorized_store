@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using AuthorizedStore.Abstractions;
 using AuthorizedStore.Exceptions;
@@ -20,29 +19,18 @@ namespace AuthorizedStore.Fake
 
         public async Task<Store> CreateAsync(Store entity)
         {
-            CheckNullOrWhiteSpace(entity?.Name, nameof(Store.Name));
-            CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
-            if (!string.IsNullOrWhiteSpace(entity?.Name) && entity.Name.ContainsInvalidKeywords())
-            {
-                throw new ArgumentException("Name is invalid.", nameof(Store.Name));
-            }
-
-            var criteria = new StoreCriteria
-            {
-                Name = entity.Name
-            };
-            var duplicated = await _stores.FindAllAsync(criteria);
-            if (duplicated.Count > 1)
-            {
-                throw new DuplicateNameException($"{entity.Name} has already been existed.");
-            }
+            StringExtensions.CheckNullOrWhiteSpace(entity?.Name, nameof(Store.Name));
+            StringExtensions.CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
+            CheckInvalidName(entity?.Name);
+            await CheckDuplicate(entity?.Name);
 
             return await _stores.CreateAsync(entity);
         }
 
         public async Task DeleteAsync(int id)
         {
-            var store = _stores.GetAsync(id) ?? throw new ResourceNotFoundException(nameof(Category), id);
+            var store = _stores.GetAsync(id)
+                ?? throw new ResourceNotFoundException(nameof(Category), id);
 
             await _stores.DeleteAsync(id);
         }
@@ -54,11 +42,7 @@ namespace AuthorizedStore.Fake
                 return await _stores.FindAllAsync(default);
             }
 
-            if (!string.IsNullOrWhiteSpace(criteria.Name) && criteria.Name.ContainsInvalidKeywords())
-            {
-                throw new ArgumentException("Name is invalid.", nameof(Store.Name));
-            }
-
+            CheckInvalidName(criteria.Name);
             criteria.PageIndex = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
             criteria.PageSize = criteria.PageSize <= 0 ? 10 : criteria.PageSize;
 
@@ -72,32 +56,30 @@ namespace AuthorizedStore.Fake
 
         public async Task<Store> UpdateAsync(int id, Store entity)
         {
-            var store = await _stores.GetAsync(id) ?? throw new ResourceNotFoundException(nameof(Category), id);
-            CheckNullOrWhiteSpace(entity?.Name, nameof(Store.Name));
-            CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
-            if (!string.IsNullOrWhiteSpace(entity?.Name) && entity.Name.ContainsInvalidKeywords())
-            {
-                throw new ArgumentException("Name is invalid.", nameof(Store.Name));
-            }
-
-            var criteria = new StoreCriteria
-            {
-                Name = entity.Name
-            };
-            var existed = await _stores.FindAllAsync(criteria);
-            if (existed.Count > 0 && existed.FirstOrDefault().Id != id)
-            {
-                throw new DuplicateNameException("Name has already been existed.");
-            }
+            var store = await _stores.GetAsync(id)
+                ?? throw new ResourceNotFoundException(nameof(Category), id);
+            StringExtensions.CheckNullOrWhiteSpace(entity?.Name, nameof(Store.Name));
+            StringExtensions.CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
+            CheckInvalidName(entity?.Name);
+            await CheckDuplicate(entity?.Name, id);
 
             return await _stores.UpdateAsync(id, entity);
         }
 
-        private bool CheckNullOrWhiteSpace(string value, string paramName)
+        private async Task CheckDuplicate(string name, int? excludedId = null)
         {
-            return string.IsNullOrWhiteSpace(value)
-                ? throw new ArgumentNullException(paramName, $"{paramName} is required.")
-                : true;
+            if (await _stores.GetDuplicateAsync(name, excludedId) != null)
+            {
+                throw new DuplicateNameException("Name has already been existed.");
+            }
+        }
+
+        private void CheckInvalidName(string name)
+        {
+            if (!string.IsNullOrWhiteSpace(name) && name.ContainsInvalidKeywords())
+            {
+                throw new ArgumentException("Name is invalid.", nameof(Store.Name));
+            }
         }
     }
 }

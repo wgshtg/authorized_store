@@ -13,6 +13,8 @@ namespace AuthorizedStore.Abstractions
 
         Task<Store> GetAsync(int id);
 
+        Task<Store> GetDuplicateAsync(string name, int? excludedId = null);
+
         Task<Store> UpdateAsync(int id, Store entity);
     }
 }
