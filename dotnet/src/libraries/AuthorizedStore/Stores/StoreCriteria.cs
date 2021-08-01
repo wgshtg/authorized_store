@@ -2,7 +2,7 @@
 
 namespace AuthorizedStore
 {
-    public class SearchCriteria
+    public class StoreCriteria
     {
         public string Name { get; set; }
 

@@ -38,7 +38,7 @@ namespace AuthorizedStore.Fake
             return stores.FirstOrDefault(x => x.Id == id);
         }
 
-        public async Task<IPagedList<Store>> FindAllAsync(SearchCriteria criteria)
+        public async Task<IPagedList<Store>> FindAllAsync(StoreCriteria criteria)
         {
             var stores = await Task.Run(() => _stores);
             var result = string.IsNullOrWhiteSpace(criteria.Name)

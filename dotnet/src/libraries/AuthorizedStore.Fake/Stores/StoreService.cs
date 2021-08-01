@@ -27,7 +27,7 @@ namespace AuthorizedStore.Fake
                 throw new ArgumentException("Name is invalid.", nameof(Store.Name));
             }
 
-            var criteria = new SearchCriteria
+            var criteria = new StoreCriteria
             {
                 Name = entity.Name
             };
@@ -47,7 +47,7 @@ namespace AuthorizedStore.Fake
             await _stores.DeleteAsync(id);
         }
 
-        public async Task<IPagedList<Store>> FindAllAsync(SearchCriteria criteria)
+        public async Task<IPagedList<Store>> FindAllAsync(StoreCriteria criteria)
         {
             if (criteria == null)
             {
@@ -80,7 +80,7 @@ namespace AuthorizedStore.Fake
                 throw new ArgumentException("Name is invalid.", nameof(Store.Name));
             }
 
-            var criteria = new SearchCriteria
+            var criteria = new StoreCriteria
             {
                 Name = entity.Name
             };

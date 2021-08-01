@@ -9,7 +9,7 @@ namespace AuthorizedStore.Abstractions
 
         Task DeleteAsync(int id);
 
-        Task<IPagedList<Store>> FindAllAsync(SearchCriteria criteria);
+        Task<IPagedList<Store>> FindAllAsync(StoreCriteria criteria);
 
         Task<Store> GetAsync(int id);
 
