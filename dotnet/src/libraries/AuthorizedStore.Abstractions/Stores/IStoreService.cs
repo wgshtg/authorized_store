@@ -3,7 +3,7 @@ using X.PagedList;
 
 namespace AuthorizedStore.Abstractions
 {
-    public interface IStoreDao
+    public interface IStoreService
     {
         Task<Store> CreateAsync(Store entity);
 
