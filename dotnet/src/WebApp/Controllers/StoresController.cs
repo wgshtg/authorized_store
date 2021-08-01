@@ -43,9 +43,9 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllAsync([FromQuery] StoreCriteria criteria)
+        public async Task<IActionResult> GetListAsync([FromQuery] StoreCriteria criteria)
         {
-            var stores = await _stores.FindAllAsync(criteria);
+            var stores = await _stores.GetListAsync(criteria);
 
             return Ok(stores);
         }

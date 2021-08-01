@@ -55,7 +55,7 @@ namespace AuthorizedStore.Fake
             return result.FirstOrDefault();
         }
 
-        public async Task<IPagedList<Store>> FindAllAsync(StoreCriteria criteria)
+        public async Task<IPagedList<Store>> GetListAsync(StoreCriteria criteria)
         {
             var stores = await Task.Run(() => _stores);
             var result = string.IsNullOrWhiteSpace(criteria.Name)

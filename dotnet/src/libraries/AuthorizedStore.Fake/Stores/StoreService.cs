@@ -35,11 +35,11 @@ namespace AuthorizedStore.Fake
             await _stores.DeleteAsync(id);
         }
 
-        public async Task<IPagedList<Store>> FindAllAsync(StoreCriteria criteria)
+        public async Task<IPagedList<Store>> GetListAsync(StoreCriteria criteria)
         {
             if (criteria == null)
             {
-                return await _stores.FindAllAsync(default);
+                return await _stores.GetListAsync(default);
             }
 
             CheckInvalidName(criteria.Name);
@@ -52,7 +52,7 @@ namespace AuthorizedStore.Fake
             criteria.PageIndex = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
             criteria.PageSize = criteria.PageSize <= 0 ? 10 : criteria.PageSize;
 
-            return await _stores.FindAllAsync(criteria);
+            return await _stores.GetListAsync(criteria);
         }
 
         public async Task<Store> GetAsync(int id)
