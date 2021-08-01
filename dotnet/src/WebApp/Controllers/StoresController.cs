@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using AuthorizedStore;
+using AuthorizedStore.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApp.Controllers

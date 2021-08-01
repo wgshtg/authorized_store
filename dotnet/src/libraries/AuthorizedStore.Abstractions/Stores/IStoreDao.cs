@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using X.PagedList;
 
-namespace AuthorizedStore
+namespace AuthorizedStore.Abstractions
 {
     public interface IStoreDao
     {

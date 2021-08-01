@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthorizedStore.Abstractions;
 using X.PagedList;
 
-namespace AuthorizedStore
+namespace AuthorizedStore.Fake
 {
     public class StoreDao : IStoreDao
     {
