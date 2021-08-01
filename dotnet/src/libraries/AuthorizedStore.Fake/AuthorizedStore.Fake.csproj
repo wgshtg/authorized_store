@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Categories\categories.json">
+    <None Update="Resources\*.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

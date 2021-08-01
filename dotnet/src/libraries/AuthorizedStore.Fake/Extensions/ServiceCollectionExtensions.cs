@@ -10,29 +10,37 @@ namespace AuthorizedStore.Fake.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        private const string ResDir = "Resources";
+
         public static IServiceCollection AddFakeModule(this IServiceCollection services)
         {
             var fileProvider = new PhysicalFileProvider(AppContext.BaseDirectory);
-            var filePath = Path.Combine("Categories", "categories.json");
-            var fileInfo = fileProvider.GetFileInfo(filePath);
+            var categories = fileProvider.DeserializeFromFile<Category>("categories.json");
+            var stores = fileProvider.DeserializeFromFile<Store>("stores.json");
 
-            IList<Category> categoriesSource;
+            services.AddSingleton<ICategoryDao>(_ => new CategoryDao(categories));
+            services.AddSingleton<ICategoryService, CategoryService>();
+            services.AddSingleton<IStoreDao>(_ => new StoreDao(stores));
+            services.AddSingleton<IStoreService, StoreService>();
+
+            return services;
+        }
+
+        public static IList<T> DeserializeFromFile<T>(this IFileProvider fileProvider, string filePath)
+        {
+            filePath = Path.Combine(ResDir, filePath);
+            var fileInfo = fileProvider.GetFileInfo(filePath);
             if (fileInfo.Exists)
             {
                 using var stream = fileInfo.CreateReadStream();
                 using var reader = new StreamReader(stream);
-                categoriesSource = JsonSerializer.Deserialize<IList<Category>>(reader.ReadToEnd(), new JsonSerializerOptions
+                return JsonSerializer.Deserialize<IList<T>>(reader.ReadToEnd(), new JsonSerializerOptions
                 {
                     PropertyNameCaseInsensitive = true
                 });
             }
-            else
-            {
-                categoriesSource = new List<Category>();
-            }
 
-            return services.AddSingleton<ICategoryDao>(_ => new CategoryDao(categoriesSource))
-                .AddSingleton<ICategoryService, CategoryService>();
+            return new List<T>();
         }
     }
 }
