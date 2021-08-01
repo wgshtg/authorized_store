@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AuthorizedStore.Abstractions;
 using AuthorizedStore.Exceptions;
+using AuthorizedStore.Extensions;
 using X.PagedList;
 
 namespace AuthorizedStore.Fake
@@ -19,8 +20,13 @@ namespace AuthorizedStore.Fake
 
         public async Task<Store> CreateAsync(Store entity)
         {
-            CheckNullOrWhiteSpace(entity.Name, nameof(entity.Name));
-            CheckNullOrWhiteSpace(entity.ContractContent, nameof(entity.ContractContent));
+            CheckNullOrWhiteSpace(entity?.Name, nameof(Store.Name));
+            CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
+            if (!string.IsNullOrWhiteSpace(entity?.Name) && entity.Name.ContainsInvalidKeywords())
+            {
+                throw new ArgumentException("Name is invalid.", nameof(Store.Name));
+            }
+
             var criteria = new SearchCriteria
             {
                 Name = entity.Name
@@ -48,6 +54,11 @@ namespace AuthorizedStore.Fake
                 return await _stores.FindAllAsync(default);
             }
 
+            if (!string.IsNullOrWhiteSpace(criteria.Name) && criteria.Name.ContainsInvalidKeywords())
+            {
+                throw new ArgumentException("Name is invalid.", nameof(Store.Name));
+            }
+
             criteria.PageIndex = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
             criteria.PageSize = criteria.PageSize <= 0 ? 10 : criteria.PageSize;
 
@@ -62,8 +73,13 @@ namespace AuthorizedStore.Fake
         public async Task<Store> UpdateAsync(int id, Store entity)
         {
             var store = await _stores.GetAsync(id) ?? throw new ResourceNotFoundException(nameof(Category), id);
-            CheckNullOrWhiteSpace(entity.Name, nameof(entity.Name));
-            CheckNullOrWhiteSpace(entity.ContractContent, nameof(entity.ContractContent));
+            CheckNullOrWhiteSpace(entity?.Name, nameof(Store.Name));
+            CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
+            if (!string.IsNullOrWhiteSpace(entity?.Name) && entity.Name.ContainsInvalidKeywords())
+            {
+                throw new ArgumentException("Name is invalid.", nameof(Store.Name));
+            }
+
             var criteria = new SearchCriteria
             {
                 Name = entity.Name
@@ -77,10 +93,10 @@ namespace AuthorizedStore.Fake
             return await _stores.UpdateAsync(id, entity);
         }
 
-        private bool CheckNullOrWhiteSpace(string value, string property)
+        private bool CheckNullOrWhiteSpace(string value, string paramName)
         {
             return string.IsNullOrWhiteSpace(value)
-                ? throw new ArgumentNullException(property, $"{property} is required.")
+                ? throw new ArgumentNullException(paramName, $"{paramName} is required.")
                 : true;
         }
     }
