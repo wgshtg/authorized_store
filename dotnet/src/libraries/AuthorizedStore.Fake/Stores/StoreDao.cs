@@ -18,7 +18,7 @@ namespace AuthorizedStore.Fake
         {
             var stores = await Task.Run(() => _stores);
             entity.Id = stores.Max(x => x.Id) + 1;
-            _stores.Add(entity);
+            stores.Add(entity);
 
             return entity;
         }

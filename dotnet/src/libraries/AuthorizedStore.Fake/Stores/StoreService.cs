@@ -30,7 +30,7 @@ namespace AuthorizedStore.Fake
         public async Task DeleteAsync(int id)
         {
             var store = _stores.GetAsync(id)
-                ?? throw new ResourceNotFoundException(nameof(Category), id);
+                ?? throw new ResourceNotFoundException(nameof(Store), id);
 
             await _stores.DeleteAsync(id);
         }
@@ -39,14 +39,14 @@ namespace AuthorizedStore.Fake
         {
             if (criteria == null)
             {
-                return await _stores.GetListAsync(default);
+                return await _stores.GetListAsync(new StoreCriteria());
             }
 
             CheckInvalidName(criteria.Name);
             if (criteria.ContractStartDate > criteria.ContractEndDate)
             {
                 throw new ArgumentException(
-                    $"{nameof(criteria.ContractStartDate)} should be less than {nameof(criteria.ContractEndDate)}");
+                    $"{nameof(criteria.ContractStartDate)} should be earlier than {nameof(criteria.ContractEndDate)}");
             }
 
             criteria.PageIndex = criteria.PageIndex <= 0 ? 1 : criteria.PageIndex;
@@ -63,7 +63,7 @@ namespace AuthorizedStore.Fake
         public async Task<Store> UpdateAsync(int id, Store entity)
         {
             var store = await _stores.GetAsync(id)
-                ?? throw new ResourceNotFoundException(nameof(Category), id);
+                ?? throw new ResourceNotFoundException(nameof(Store), id);
             StringExtensions.CheckNullOrWhiteSpace(entity?.Name, nameof(Store.Name));
             StringExtensions.CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
             CheckInvalidName(entity?.Name);

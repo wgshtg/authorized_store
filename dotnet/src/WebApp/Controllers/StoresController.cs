@@ -9,23 +9,23 @@ namespace WebApp.Controllers
     [Route("api/[controller]")]
     public class StoresController : ControllerBase
     {
-        private readonly IStoreService _stores;
+        private readonly IStoreService _storeService;
 
-        public StoresController(IStoreService stores)
+        public StoresController(IStoreService storeService)
         {
-            _stores = stores;
+            _storeService = storeService;
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateAsync([FromBody] Store entity)
         {
-            return Ok(await _stores.CreateAsync(entity));
+            return Ok(await _storeService.CreateAsync(entity));
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAsync(int id)
         {
-            await _stores.DeleteAsync(id);
+            await _storeService.DeleteAsync(id);
 
             return Ok();
         }
@@ -33,7 +33,7 @@ namespace WebApp.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAsync(int id)
         {
-            var store = await _stores.GetAsync(id);
+            var store = await _storeService.GetAsync(id);
             if (store == null)
             {
                 return NotFound();
@@ -45,7 +45,7 @@ namespace WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> GetListAsync([FromQuery] StoreCriteria criteria)
         {
-            var stores = await _stores.GetListAsync(criteria);
+            var stores = await _storeService.GetListAsync(criteria);
 
             return Ok(stores);
         }
@@ -54,7 +54,7 @@ namespace WebApp.Controllers
         [HttpPatch("{id}")]
         public async Task<IActionResult> UpdateAsync(int id, [FromBody] Store entity)
         {
-            return Ok(await _stores.UpdateAsync(id, entity));
+            return Ok(await _storeService.UpdateAsync(id, entity));
         }
     }
 }
