@@ -61,15 +61,14 @@ namespace AuthorizedStore.Fake
             var result = string.IsNullOrWhiteSpace(criteria.Name)
                 ? stores
                 : stores.Where(c => c.Name.Contains(criteria.Name));
-            if (criteria.ContractStartDate != null && criteria.ContractEndDate != null)
+            if (criteria.ContractStartDate.HasValue)
             {
-                // 合約期間『部分交疊』於條件範圍即可
-                result.Where(x =>
-                    (x.ContractStartDate >= criteria.ContractStartDate && x.ContractStartDate <= criteria.ContractEndDate)
-                    || (x.ContractEndDate >= criteria.ContractStartDate && x.ContractEndDate <= criteria.ContractEndDate)
-                    || (x.ContractStartDate <= criteria.ContractStartDate && x.ContractEndDate >= criteria.ContractEndDate)
-                    || (x.ContractStartDate >= criteria.ContractStartDate && x.ContractEndDate <= criteria.ContractEndDate)
-                    || (x.ContractEndDate >= criteria.ContractStartDate && x.ContractStartDate <= criteria.ContractEndDate));
+                result = result.Where(x => x.ContractEndDate >= criteria.ContractStartDate);
+            }
+
+            if (criteria.ContractEndDate.HasValue)
+            {
+                result = result.Where(x => x.ContractStartDate <= criteria.ContractEndDate);
             }
 
             var count = result.Count();
