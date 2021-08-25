@@ -6,7 +6,7 @@ namespace AuthorizedStore
     {
         public string Name { get; set; }
 
-        public int CategoryId { get; set; }
+        public int[] CategoryIds { get; set; }
 
         public DateTime? ContractStartDate { get; set; }
 

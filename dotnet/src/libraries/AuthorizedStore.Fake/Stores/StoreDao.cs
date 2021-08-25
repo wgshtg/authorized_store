@@ -61,6 +61,11 @@ namespace AuthorizedStore.Fake
             var result = string.IsNullOrWhiteSpace(criteria.Name)
                 ? stores
                 : stores.Where(c => c.Name.Contains(criteria.Name));
+            if (criteria.CategoryIds.Length > 0)
+            {
+                result = result.Where(x => criteria.CategoryIds.Contains(x.Category.Id));
+            }
+
             if (criteria.ContractStartDate.HasValue)
             {
                 result = result.Where(x => x.ContractEndDate >= criteria.ContractStartDate);

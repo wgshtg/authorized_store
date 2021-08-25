@@ -11,10 +11,12 @@ namespace AuthorizedStore.Fake
     public class StoreService : IStoreService
     {
         private readonly IStoreDao _stores;
+        private readonly ICategoryService _categoryService;
 
-        public StoreService(IStoreDao stores)
+        public StoreService(IStoreDao stores, ICategoryService categoryService)
         {
             _stores = stores;
+            _categoryService = categoryService;
         }
 
         public async Task<Store> CreateAsync(Store entity)
@@ -23,6 +25,9 @@ namespace AuthorizedStore.Fake
             StringExtensions.CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
             CheckInvalidName(entity?.Name);
             await CheckDuplicate(entity?.Name);
+            entity.Category = entity.Category?.Id != null
+                ? await _categoryService.GetAsync(entity.Category.Id)
+                : default;
 
             return await _stores.CreateAsync(entity);
         }
@@ -68,6 +73,9 @@ namespace AuthorizedStore.Fake
             StringExtensions.CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
             CheckInvalidName(entity?.Name);
             await CheckDuplicate(entity?.Name, id);
+            entity.Category = entity.Category?.Id != null
+                ? await _categoryService.GetAsync(entity.Category.Id)
+                : default;
 
             return await _stores.UpdateAsync(id, entity);
         }
