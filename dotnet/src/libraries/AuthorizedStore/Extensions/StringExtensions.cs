@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 
 namespace AuthorizedStore.Extensions
 {
@@ -9,5 +10,12 @@ namespace AuthorizedStore.Extensions
 
         public static bool ContainsInvalidKeywords(this string input)
             => s_invalidKeywordValidator.IsMatch(input ?? string.Empty);
+
+        public static bool CheckNullOrWhiteSpace(string value, string paramName)
+        {
+            return string.IsNullOrWhiteSpace(value)
+                ? throw new ArgumentNullException(paramName, $"{paramName} is required.")
+                : false;
+        }
     }
 }
