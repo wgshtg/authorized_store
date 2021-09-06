@@ -25,7 +25,7 @@ namespace AuthorizedStore.Fake
             StringExtensions.CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
             CheckInvalidName(entity?.Name);
             await CheckDuplicate(entity?.Name);
-            entity.Category = entity.Category?.Id != null
+            entity.Category = entity.Category != null
                 ? await _categoryService.GetAsync(entity.Category.Id)
                 : default;
 
@@ -73,7 +73,7 @@ namespace AuthorizedStore.Fake
             StringExtensions.CheckNullOrWhiteSpace(entity?.ContractContent, nameof(Store.ContractContent));
             CheckInvalidName(entity?.Name);
             await CheckDuplicate(entity?.Name, id);
-            entity.Category = entity.Category?.Id != null
+            entity.Category = entity.Category != null
                 ? await _categoryService.GetAsync(entity.Category.Id)
                 : default;
 
