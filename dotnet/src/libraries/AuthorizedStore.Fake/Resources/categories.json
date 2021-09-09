@@ -1,14 +1,14 @@
 [
   {
     "id": 1,
-    "name": "餐廳"
+    "name": "餐飲"
   },
   {
     "id": 2,
-    "name": "Restaurant"
+    "name": "服飾"
   },
   {
     "id": 3,
-    "name": "レストラン"
+    "name": "運動"
   }
 ]
